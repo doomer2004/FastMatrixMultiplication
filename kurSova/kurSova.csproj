@@ -134,7 +134,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <Resource Include="Fonts\KdamThmorPro-Regular.ttf" />
-    <Resource Include="Fonts\Inconsolata_Condensed-Medium.ttf" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
