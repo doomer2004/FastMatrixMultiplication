@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Windows.Media;
 using Newtonsoft.Json;
 namespace kurSova.Models
 {
@@ -21,6 +22,12 @@ namespace kurSova.Models
                 for (int col = 0; col < matrix.Columns; col++)
                     matrix[row, col] = random.Next(-9, 9 + 1);
 
+            
+            if (m <= 63 || n <=63)
+            {
+                throw new InvalidOperationException("Unable size");
+            }
+            
             return matrix;
         }
 

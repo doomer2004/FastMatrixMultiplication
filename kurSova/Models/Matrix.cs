@@ -22,8 +22,8 @@ namespace kurSova.Models
             }
         }
         [JsonInclude]
-        public double[,] values { get; }
-        public double this[int row, int col]
+        public int[,] values { get; }
+        public int this[int row, int col]
         {
             get
             {
@@ -42,12 +42,12 @@ namespace kurSova.Models
             if (n < 0)
                 throw new ArgumentOutOfRangeException("n is less than  to 0.");
 
-            values = new double[m, n];
+            values = new int[m, n];
         }
 
         public Matrix(int m) : this(m, m) { }
 
-        public Matrix(double[,] values)
+        public Matrix(int[,] values)
         {
             if (values == null)
                 throw new ArgumentNullException("values == null.");
@@ -128,7 +128,7 @@ namespace kurSova.Models
             {
                 for (int col = 0; col < b.Columns; col++)
                 {
-                    double tmp = 0;
+                    int tmp = 0;
                     for (int i = 0; i < a.Columns; i++) 
                         tmp += a[row, i] * b[i, col];
 
@@ -258,9 +258,5 @@ namespace kurSova.Models
 
             return CombineSubMatrices(c11, c12, c21, c22);
         }
-
-        
-        
-        
     }
 }
