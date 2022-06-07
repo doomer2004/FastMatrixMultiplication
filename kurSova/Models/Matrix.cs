@@ -7,25 +7,13 @@ namespace kurSova.Models
     [Serializable]
     public sealed class Matrix
     {
-        public int RowsCount {
-            get {
-                return _values.GetLength(0);
-            }
-        }
-        public int ColumnsCount {
-            get {
-                return _values.GetLength(1);
-            }
-        }
+        public int RowsCount => _values.GetLength(0);
+        public int ColumnsCount => _values.GetLength(1);
         [JsonInclude]
         private readonly int[,] _values;
         public int this[int row, int col] {
-            get {
-                return _values[row, col];
-            }
-            set {
-                _values[row, col] = value;
-            }
+            get => _values[row, col];
+            set => _values[row, col] = value;
         }
 
         public Matrix(int m, int n)
@@ -54,9 +42,13 @@ namespace kurSova.Models
                 return false;
 
             for (int row = 0; row < a.RowsCount; row++)
+            {
                 for (int col = 0; col < a.ColumnsCount; col++)
+                {
                     if (a[row, col] != b[row, col])
                         return false;
+                }
+            }
 
             return true;
         }
@@ -78,8 +70,10 @@ namespace kurSova.Models
 
             Matrix result = new Matrix(a.RowsCount, a.ColumnsCount);
             for (int row = 0; row < a.RowsCount; row++)
+            {
                 for (int col = 0; col < a.ColumnsCount; col++)
                     result[row, col] = a[row, col] + b[row, col];
+            }
 
             return result;
         }
@@ -92,8 +86,10 @@ namespace kurSova.Models
             Matrix result = new Matrix(a.RowsCount, a.ColumnsCount);
 
             for (int row = 0; row < a.RowsCount; row++)
+            {
                 for (int col = 0; col < a.ColumnsCount; col++)
                     result[row, col] = a[row, col] - b[row, col];
+            }
 
             return result;
         }
@@ -164,8 +160,11 @@ namespace kurSova.Models
         {
             Matrix result = new Matrix(rowTo - rowFrom, colTo - colFrom);
             for (int row = rowFrom, i = 0; row < rowTo; row++, i++)
+            {
                 for (int col = colFrom, j = 0; col < colTo; col++, j++)
                     result[i, j] = _values[row, col];
+            }
+
             return result;
         }
 
@@ -174,6 +173,7 @@ namespace kurSova.Models
             Matrix result = new Matrix(topLeft.RowsCount * 2);
             int shift = topLeft.RowsCount;
             for (int row = 0; row < topLeft.RowsCount; row++)
+            {
                 for (int col = 0; col < topLeft.ColumnsCount; col++)
                 {
                     result[row, col] = topLeft[row, col];
@@ -181,12 +181,14 @@ namespace kurSova.Models
                     result[row + shift, col] = bottomLeft[row, col];
                     result[row + shift, col + shift] = bottomRight[row, col];
                 }
+            }
+
             return result;
         }
 
         public static Matrix StrassenVinogradMultiply(Matrix a, Matrix b)
         {
-            var sizes = new int[] { a.RowsCount, a.ColumnsCount, b.RowsCount, b.ColumnsCount };
+            int[] sizes = new int[] { a.RowsCount, a.ColumnsCount, b.RowsCount, b.ColumnsCount };
             if (sizes.Distinct().Count() != 1 || (a.RowsCount & (a.RowsCount - 1)) != 0)
                 throw new ArgumentException("Not identical or square matrices.");
 

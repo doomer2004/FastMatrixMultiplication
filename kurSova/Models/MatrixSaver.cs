@@ -13,7 +13,7 @@ namespace kurSova.Models
         public static string pathRes { get; } = "matrixRes.txt";
         public static void SaveMatrix(Matrix matrix)
         {
-            var savedMatrix = new Dictionary<int, int[]>();
+            Dictionary<int, int[]> savedMatrix = new Dictionary<int, int[]>();
             for (int i = 0; i < matrix.ColumnsCount; i++)
             {
                 int[] tempMatrix = new int[matrix.RowsCount];
@@ -39,7 +39,7 @@ namespace kurSova.Models
                 fromJson = JsonConvert.DeserializeObject<Dictionary<int, int[]>>(streamReader.ReadToEnd());
             }
             Matrix readedMatrix = new Matrix(fromJson.Keys.Count, fromJson.Values.Count);
-            var matrix = fromJson.Values.ToArray();
+            int[][] matrix = fromJson.Values.ToArray();
             for (int i = 0; i < readedMatrix.ColumnsCount; i++)
             {
                 for (int j = 0; j < readedMatrix.RowsCount; j++)
