@@ -33,7 +33,7 @@ namespace kurSova.ViewModels
         {
             var (matrix, milliseconds) = TimeTester.TestMatrixTime(matrixA, matrixB, Matrix.NormalMultiply);
             resultMatrix = matrix;
-            MatrixSaver.SaveMatrix(resultMatrix, );
+            MatrixSaver.SaveMatrix(resultMatrix);
             ShowMilliseconds?.Invoke(new long[] { milliseconds }, MultiplyType.NormalMultiply);
         }
         public void StrassenMultiply()
