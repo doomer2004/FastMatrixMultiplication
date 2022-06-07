@@ -47,13 +47,7 @@ namespace kurSova.Models
                     readedMatrix[i, j] = matrix[i][j];
                 }
             }
-            if (fromJson == null)
-            {
-                throw new NullReferenceException("Unable to Deserialize");
-            }
-            return readedMatrix;
+            return fromJson != null ? readedMatrix : throw new NullReferenceException("Unable to Deserialize");
         }
-
-
     }
 }

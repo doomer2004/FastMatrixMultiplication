@@ -3,192 +3,182 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:tools="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:kurSova"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=local:MainWindow, IsDesignTimeCreatable=True}"
         Title="MainWindow"
         Height="450"
         Width="700"
-        WindowStartupLocation="CenterScreen">
-    <Grid>
+        WindowStartupLocation="CenterScreen"
+        FontFamily="Kdam Thmor Pro">
+    <Grid Margin="10,0,10,10">
+        <Grid.Resources>
+            <Style TargetType="Button">
+                <Setter Property="Width"
+                        Value="130" />
+                <Setter Property="Height"
+                        Value="40" />
+                <Setter Property="FontSize"
+                        Value="20" />
+                <Setter Property="HorizontalContentAlignment"
+                        Value="Center" />
+            </Style>
+            <Style TargetType="tools:IntegerUpDown">
+                <Setter Property="FontSize"
+                        Value="16" />
+                <Setter Property="Width"
+                        Value="55" />
+                <Setter Property="Height"
+                        Value="30" />
+                <Setter Property="Minimum"
+                        Value="64" />
+            </Style>
+        </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height="70" />
-            <RowDefinition Height="200" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="45" />
+            <RowDefinition />
         </Grid.RowDefinitions>
-        <Label Grid.Row="0"
-               Content="Matrix Multiplication"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"
-               FontStyle="Normal"
-               FontSize="20">
-        </Label>
+        <Grid Grid.Row="0">
+            <TextBlock Text="Fast Matrix Multiplies"
+                       FontSize="30"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontFamily="Kdam Thmor Pro" />
+        </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
+                <ColumnDefinition Width="99*" />
+                <ColumnDefinition Width="37*" />
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="50" />
+                    <RowDefinition Height="205" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0"
-                       Content="Matrix1:"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="top"
-                       FontStyle="Normal"
-                       FontSize="15">
-                </Label>
-                <Grid Grid.Row="1">
-
-
+                <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Grid.Resources>
-                        <Style TargetType="Button">
-                            <Setter Property="Height"
-                                    Value="40" />
-                            <Setter Property="Width"
-                                    Value="120" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Top" />
-                        </Style>
-                    </Grid.Resources>
-                    <Button Grid.Column="0"
-                            Name="FromFile1"
-                            Click="From_File"
-                            Content="From File"></Button>
-                    <Button Grid.Column="1"
-                            Name="RandButton1"
-                            Click="Random_New"
-                            Content="Random New"></Button>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Matrix A"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="24" />
+                        <Button Grid.Row="1"
+                                Content="Open file..."
+                                Padding="10,0"
+                                Tag="FromFileA"
+                                Click="MatrixFromFile_Click" />
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="145*" />
+                                <ColumnDefinition Width="86*" />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0"
+                                    Width="130"
+                                    FontSize="18"
+                                    Content="Randomly"
+                                    Padding="10,0"
+                                    Tag="RandA"
+                                    Click="MatrixRandom_Click" />
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <tools:IntegerUpDown Grid.Row="0"
+                                                     x:Name="MatrixASize1"
+                                                     HorizontalAlignment="Left"
+                                                     Value="64" />
+                                <tools:IntegerUpDown Grid.Row="1"
+                                                     x:Name="MatrixASize2"
+                                                     HorizontalAlignment="Left"
+                                                     Value="512" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Matrix B"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="24" />
+                        <Button Grid.Row="1"
+                                Content="Open file..."
+                                Padding="10,0"
+                                Tag="FromFileB"
+                                Click="MatrixFromFile_Click" />
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="86*" />
+                                <ColumnDefinition Width="145*" />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="1"
+                                    Width="130"
+                                    FontSize="18"
+                                    Content="Randomly"
+                                    Padding="10,0"
+                                    Tag="RandomB"
+                                    Click="MatrixRandom_Click" />
+                            <Grid Grid.Column="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <tools:IntegerUpDown Grid.Row="0"
+                                                     x:Name="MatrixBSize1"
+                                                     HorizontalAlignment="Right"
+                                                     Value="64" />
+                                <tools:IntegerUpDown Grid.Row="1"
+                                                     x:Name="MatrixBSize2"
+                                                     HorizontalAlignment="Right"
+                                                     Value="512" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </Grid>
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <TextBox Grid.Column="1"
-                             Height="20"
-                             Width="50"
-                             HorizontalAlignment="Center"
-                             VerticalAlignment="top"
-                             Name="RandBox1"></TextBox>
-                    <TextBlock Grid.Column="0"
-                               Height="50"
-                               Width="100"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="top"
-                               Text="The matrix will be read from the file"
-                               TextWrapping="WrapWithOverflow"></TextBlock>
+                <Grid Grid.Row="1">
+                    <TextBlock Text="Multiply method:"
+                               FontSize="20"
+                               Margin="10"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top" />
+                    <ComboBox HorizontalAlignment="Left"
+                              MinWidth="200"
+                              VerticalAlignment="Top"
+                              FontSize="20"
+                              Margin="10,55"
+                              SelectedItem="{Binding Path=SelectedMethod, Mode=OneWayToSource}"
+                              SelectedIndex="0"
+                              ItemsSource="{Binding Path=Methods}" />
+                    <Button Content="Multiply"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Margin="50,25"
+                            Click="Multiply_Click" />
                 </Grid>
             </Grid>
-
             <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="50" />
-                </Grid.RowDefinitions>
-                <Label Grid.Row="0"
-                       Content="Matrix2:"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="top"
-                       FontStyle="Normal"
-                       FontSize="15">
-                </Label>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Grid.Resources>
-                        <Style TargetType="Button">
-                            <Setter Property="Height"
-                                    Value="40" />
-                            <Setter Property="Width"
-                                    Value="120" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Top" />
-                        </Style>
-                    </Grid.Resources>
-                    <Button Grid.Column="0"
-                            Name="FromFile2"
-                            Click="From_File"
-                            Content="From File"></Button>
-                    <Button Grid.Column="1"
-                            Name="RandButton2"
-                            Click="Random_New"
-                            Content="Random New"></Button>
-                </Grid>
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <TextBox Grid.Column="1"
-                             Height="20"
-                             Width="50"
-                             HorizontalAlignment="Center"
-                             VerticalAlignment="top"
-                             Name="RandBox2"></TextBox>
-                    <TextBlock Grid.Column="0"
-                               Height="50"
-                               Width="100"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="top"
-                               Text="The matrix will be read from the file"
-                               TextWrapping="WrapWithOverflow"></TextBlock>
-                </Grid>
+                <StackPanel Orientation="Vertical">
+                    <Button Content="Open file A"
+                            Margin="0,25" />
+                    <Button Content="Open file B"
+                            Margin="0,25" />
+                    <Button Content="Open result"
+                            Margin="0,25" />
+                </StackPanel>
             </Grid>
         </Grid>
-        <Grid Grid.Row="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Label Grid.Row="0"
-                   Content="Choose a multiplication method:"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="top"
-                   FontStyle="Normal"
-                   FontSize="15">
-            </Label>
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.Resources>
-                    <Style TargetType="Button">
-                        <Setter Property="Height"
-                                Value="40" />
-                        <Setter Property="Width"
-                                Value="120" />
-                        <Setter Property="VerticalAlignment"
-                                Value="Top" />
-
-                    </Style>
-                </Grid.Resources>
-                <Button Grid.Column="0"
-                        Click="Normal_Multiply"
-                        Content="Normal Multiply"></Button>
-                <Button Grid.Column="1"
-                        Click="Strassen_Multiply"
-                        Content="Strassen Multiply"></Button>
-                <Button Grid.Column="2"
-                        Click="Strassen_Vinograd_Multiply"
-                        Content="Strassen-Vinograd "></Button>
-                <Button Grid.Column="3"
-                        Click="All_Multiplys"
-                        Content="All Multiplys"></Button>
-            </Grid>
-        </Grid>
-
     </Grid>
 </Window>
