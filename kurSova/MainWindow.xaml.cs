@@ -1,9 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
 using kurSova.Enums;
+using kurSova.Models;
 using kurSova.ViewModels;
+
+using Microsoft.Win32;
+
 namespace kurSova
 {
     /// <summary>
@@ -11,70 +18,82 @@ namespace kurSova
     /// </summary>
     public partial class MainWindow
     {
-        private readonly ViewModel viewModel;
+        private MultiplyType _multiplyType;
+        public MatrixViewModel ViewModel { get; set; }
+        public List<MultiplyType> Methods => Enum.GetValues(typeof(MultiplyType)).Cast<MultiplyType>().ToList();
+        public MultiplyType SelectedMethod {
+            get => _multiplyType;
+            set {
+                _multiplyType = value;
+                Debug.WriteLine(_multiplyType);
+            }
+
+        }
         public MainWindow()
         {
             InitializeComponent();
-            viewModel = new ViewModel();
-            viewModel.ShowMilliseconds += Show_Milliseconds;
+            DataContext = this;
+            ViewModel = new MatrixViewModel();
+            ViewModel.ShowMilliseconds += Show_Milliseconds;
         }
-
-        private void From_File(object sender, RoutedEventArgs e)
+        private void MatrixFromFile_Click(object sender, RoutedEventArgs e)
         {
-            if (((Button)sender) == FromFile1)
-            {
-                viewModel.MatrixFirstFromFile();
-            }
-            else
-            {
-                viewModel.MatrixSecondFromFile();
-            }
-        }
+            Button button = (Button)sender;
+            OpenFileDialog dialog = new OpenFileDialog() {
+                DefaultExt = ".txt",
+                Filter = "Text documents (.txt)|*.txt"
+            };
+            if (dialog.ShowDialog() != true)
+                return;
 
-        private void Random_New(object sender, RoutedEventArgs e)
-        {
+            string path = dialog.FileName;
+            Matrix loaded;
             try
             {
-                if (((Button)sender) == RandButton1)
+                loaded = GetMatrixFromFile(path);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("File content was incorrect format\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (button.Tag.ToString().EndsWith("A"))
+                ViewModel.MatrixA = loaded;
+            else
+                ViewModel.MatrixB = loaded;
+            MessageBox.Show("File loaded successfuly", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        private void MatrixRandom_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            try
+            {
+                int n, m;
+                if (button.Tag.ToString().EndsWith("A"))
                 {
-                    string[] text = RandBox1.Text.Split(' ', (char)StringSplitOptions.RemoveEmptyEntries);
-                    int row = int.Parse(text[0]);
-                    int col = int.Parse(text[1]);
-                    viewModel.MatrixFirstRandom(row, col);
-                    RandBox1.Text = "";
+                    m = MatrixASize1.Value.Value;
+                    n = MatrixASize2.Value.Value;
+                    ViewModel.MatrixA = MatrixGenerator.Generate(n, m);
                 }
                 else
                 {
-                    string[] text = RandBox2.Text.Split(' ', (char)StringSplitOptions.RemoveEmptyEntries);
-                    int row = int.Parse(text[0]);
-                    int col = int.Parse(text[1]);
-                    viewModel.MatrixSecondRandom(row, col);
-                    RandBox2.Text = "";
+                    m = MatrixBSize1.Value.Value;
+                    n = MatrixBSize2.Value.Value;
+                    ViewModel.MatrixB = MatrixGenerator.Generate(n, m);
                 }
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                MessageBox.Show(exception.Message);
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
+            MessageBox.Show("Matrix generated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
         }
-        private void Normal_Multiply(object sender, RoutedEventArgs e)
+        private Matrix GetMatrixFromFile(string path)
         {
-            viewModel.NormalMultiply();
+            return MatrixSaver.ReadMatrixFromFile(path);
         }
-        private void Strassen_Multiply(object sender, RoutedEventArgs e)
-        {
-            viewModel.StrassenMultiply();
-        }
-        private void Strassen_Vinograd_Multiply(object sender, RoutedEventArgs e)
-        {
-            viewModel.StrassenVinogradMultiply();
-        }
-        private void All_Multiplys(object sender, RoutedEventArgs e)
-        {
-            viewModel.AllMultiplys();
-        }
-
         private void Show_Milliseconds(long[] milliseconds, MultiplyType type)
         {
             string res;
@@ -96,7 +115,30 @@ namespace kurSova
                     throw new ArgumentOutOfRangeException("Out of raange");
             }
 
-            MessageBox.Show(res);
+            MessageBox.Show(res, "Statistics", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void Multiply_Click(object sender, RoutedEventArgs e)
+        {
+            switch (SelectedMethod)
+            {
+                case MultiplyType.NormalMultiply:
+                    ViewModel.NormalMultiply();
+
+                    break;
+                case MultiplyType.StrassenMultiply:
+                    ViewModel.StrassenMultiply();
+
+                    break;
+                case MultiplyType.StrassenVinogradMultiply:
+                    ViewModel.StrassenVinogradMultiply();
+
+                    break;
+                case MultiplyType.All:
+                    ViewModel.AllMultiplys();
+
+                    break;
+            }
         }
     }
 }
