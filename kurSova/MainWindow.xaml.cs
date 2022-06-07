@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+
 using kurSova.Enums;
 using kurSova.ViewModels;
 namespace kurSova
@@ -11,7 +11,7 @@ namespace kurSova
     /// </summary>
     public partial class MainWindow
     {
-        private ViewModel viewModel;
+        private readonly ViewModel viewModel;
         public MainWindow()
         {
             InitializeComponent();
@@ -37,7 +37,7 @@ namespace kurSova
             {
                 if (((Button)sender) == RandButton1)
                 {
-                    string[] text = RandBox1.Text.Split(' ', (char) StringSplitOptions.RemoveEmptyEntries);
+                    string[] text = RandBox1.Text.Split(' ', (char)StringSplitOptions.RemoveEmptyEntries);
                     int row = int.Parse(text[0]);
                     int col = int.Parse(text[1]);
                     viewModel.MatrixFirstRandom(row, col);
@@ -45,7 +45,7 @@ namespace kurSova
                 }
                 else
                 {
-                    string[] text = RandBox2.Text.Split(' ', (char) StringSplitOptions.RemoveEmptyEntries);
+                    string[] text = RandBox2.Text.Split(' ', (char)StringSplitOptions.RemoveEmptyEntries);
                     int row = int.Parse(text[0]);
                     int col = int.Parse(text[1]);
                     viewModel.MatrixSecondRandom(row, col);
@@ -56,9 +56,8 @@ namespace kurSova
             {
                 MessageBox.Show(exception.Message);
             }
-            
-        }
 
+        }
         private void Normal_Multiply(object sender, RoutedEventArgs e)
         {
             viewModel.NormalMultiply();

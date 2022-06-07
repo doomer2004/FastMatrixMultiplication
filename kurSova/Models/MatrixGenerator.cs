@@ -1,13 +1,10 @@
 using System;
-using System.IO;
-using System.Windows.Media;
-using Newtonsoft.Json;
 namespace kurSova.Models
 {
-    
+
     public static class MatrixGenerator
     {
-        private static Random random;
+        private static readonly Random random;
 
         static MatrixGenerator()
         {
@@ -18,17 +15,13 @@ namespace kurSova.Models
         {
             Matrix matrix = new Matrix(m, n);
 
-            for (int row = 0; row < matrix.Rows; row++)
-                for (int col = 0; col < matrix.Columns; col++)
-                    matrix[row, col] = random.Next(-9, 9 + 1);
-
-            
-            if (m <= 63 || n <=63)
+            for (int row = 0; row < matrix.RowsCount; row++)
             {
-                throw new InvalidOperationException("Unable size");
+                for (int col = 0; col < matrix.ColumnsCount; col++)
+                    matrix[row, col] = random.Next(-9, 9 + 1);
             }
-            
-            return matrix;
+
+            return m <= 63 || n <= 63 ? throw new InvalidOperationException("Unable size") : matrix;
         }
 
         //public static Matrix Generate(int m, int minValue = -9, int maxValue = 9)
@@ -45,8 +38,5 @@ namespace kurSova.Models
 
             return matrix;
         }
-
-        
-        
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using kurSova.Enums;
 using kurSova.Models;
 
@@ -50,31 +49,31 @@ namespace kurSova.ViewModels
             var (matrix, milliseconds) = TimeTester.TestMatrixTime(m1, m2, Matrix.NormalMultiply);
             resMatrix = matrix;
             MatrixSaver.SaveMatrix(resMatrix);
-            ShowMilliseconds?.Invoke(new long[]{milliseconds}, MultiplyType.NormalMultiply);
+            ShowMilliseconds?.Invoke(new long[] { milliseconds }, MultiplyType.NormalMultiply);
         }
         public void StrassenMultiply()
         {
             var (matrix, milliseconds) = TimeTester.TestMatrixTime(m1, m2, Matrix.StrassenMultiply);
             resMatrix = matrix;
             MatrixSaver.SaveMatrix(resMatrix);
-            ShowMilliseconds?.Invoke(new long[]{milliseconds}, MultiplyType.StrassenMultiply);
+            ShowMilliseconds?.Invoke(new long[] { milliseconds }, MultiplyType.StrassenMultiply);
         }
         public void StrassenVinogradMultiply()
         {
             var (matrix, milliseconds) = TimeTester.TestMatrixTime(m1, m2, Matrix.StrassenVinogradMultiply);
             resMatrix = matrix;
             MatrixSaver.SaveMatrix(resMatrix);
-            ShowMilliseconds?.Invoke(new long[]{milliseconds}, MultiplyType.StrassenVinogradMultiply);
+            ShowMilliseconds?.Invoke(new long[] { milliseconds }, MultiplyType.StrassenVinogradMultiply);
         }
         public void AllMultiplys()
         {
-            var  millisecondsNorm = TimeTester.TestMatrixTime(m1, m2, Matrix.NormalMultiply).milliseconds;
-            var  (matrix, millisecondsStrassen) = TimeTester.TestMatrixTime(m1, m2, Matrix.StrassenMultiply);
-            var  millisecondsStrassenVinograd = TimeTester.TestMatrixTime(m1, m2, Matrix.StrassenVinogradMultiply).milliseconds;
+            long millisecondsNorm = TimeTester.TestMatrixTime(m1, m2, Matrix.NormalMultiply).milliseconds;
+            var (matrix, millisecondsStrassen) = TimeTester.TestMatrixTime(m1, m2, Matrix.StrassenMultiply);
+            long millisecondsStrassenVinograd = TimeTester.TestMatrixTime(m1, m2, Matrix.StrassenVinogradMultiply).milliseconds;
             resMatrix = matrix;
             MatrixSaver.SaveMatrix(resMatrix);
-            ShowMilliseconds?.Invoke(new long[]{millisecondsNorm, millisecondsStrassen, millisecondsStrassenVinograd}, MultiplyType.All);
+            ShowMilliseconds?.Invoke(new long[] { millisecondsNorm, millisecondsStrassen, millisecondsStrassenVinograd }, MultiplyType.All);
         }
-        
+
     }
 }

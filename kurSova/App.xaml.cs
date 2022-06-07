@@ -19,7 +19,7 @@ namespace kurSova
             {
                 MessageBox.Show(exception.Message);
             }
-            
+
         }
     }
 }
