@@ -58,7 +58,6 @@ namespace kurSova
             }
             
         }
-
         private void Normal_Multiply(object sender, RoutedEventArgs e)
         {
             viewModel.NormalMultiply();
