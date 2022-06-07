@@ -2,22 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
 
+using Newtonsoft.Json;
 namespace kurSova.Models
 {
     public static class MatrixSaver
     {
-        public static string path1 { get; } = "matrixRead1";
-        public static string path2{ get; } = "matrixRead2";
-        public static string pathRes{ get; } = "matrixRes";
+        public static string path1 { get; } = "matrixRead1.txt";
+        public static string path2 { get; } = "matrixRead2.txt";
+        public static string pathRes { get; } = "matrixRes.txt";
         public static void SaveMatrix(Matrix matrix)
         {
-            var savedMatrix =new Dictionary<int, int[]>();
-            for (int i = 0; i < matrix.Columns; i++)
+            var savedMatrix = new Dictionary<int, int[]>();
+            for (int i = 0; i < matrix.ColumnsCount; i++)
             {
-                int[] tempMatrix = new int [matrix.Rows];
-                for (int j = 0; j < matrix.Rows; j++)
+                int[] tempMatrix = new int[matrix.RowsCount];
+                for (int j = 0; j < matrix.RowsCount; j++)
                 {
                     tempMatrix[j] = matrix[i, j];
                 }
@@ -26,7 +26,7 @@ namespace kurSova.Models
 
             using (StreamWriter writer = new StreamWriter(pathRes, append: false))
             {
-                string json = JsonSerializer.Serialize(savedMatrix);
+                string json = JsonConvert.SerializeObject(savedMatrix, Formatting.Indented);
                 writer.Write(json);
             }
         }
@@ -36,13 +36,13 @@ namespace kurSova.Models
             Dictionary<int, int[]> fromJson;
             using (StreamReader streamReader = new StreamReader(path))
             {
-                fromJson = JsonSerializer.Deserialize<Dictionary<int, int[]>>(streamReader.ReadToEnd());
+                fromJson = JsonConvert.DeserializeObject<Dictionary<int, int[]>>(streamReader.ReadToEnd());
             }
             Matrix readedMatrix = new Matrix(fromJson.Keys.Count, fromJson.Values.Count);
             var matrix = fromJson.Values.ToArray();
-            for (int i = 0; i < readedMatrix.Columns; i++)
+            for (int i = 0; i < readedMatrix.ColumnsCount; i++)
             {
-                for (int j = 0; j < readedMatrix.Rows; j++)
+                for (int j = 0; j < readedMatrix.RowsCount; j++)
                 {
                     readedMatrix[i, j] = matrix[i][j];
                 }
@@ -53,7 +53,7 @@ namespace kurSova.Models
             }
             return readedMatrix;
         }
-        
-        
+
+
     }
 }
