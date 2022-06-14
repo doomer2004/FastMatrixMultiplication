@@ -42,13 +42,8 @@ namespace kurSova.Models
                 return false;
 
             for (int row = 0; row < a.RowsCount; row++)
-            {
-                for (int col = 0; col < a.ColumnsCount; col++)
-                {
-                    if (a[row, col] != b[row, col])
-                        return false;
-                }
-            }
+            for (int col = 0; col < a.ColumnsCount; col++)
+                if (a[row, col] != b[row, col]) return false;
 
             return true;
         }
@@ -118,6 +113,8 @@ namespace kurSova.Models
 
         public static Matrix StrassenMultiply(Matrix a, Matrix b)
         {
+            a = MatrixTransform(a);
+            b = MatrixTransform(b);
             int[] sizes = new int[] { a.RowsCount, a.ColumnsCount, b.RowsCount, b.ColumnsCount };
             if (sizes.Distinct().Count() != 1 || (a.RowsCount & (a.RowsCount - 1)) != 0)
                 throw new ArgumentException("Not identical or square matrices.");
@@ -188,6 +185,8 @@ namespace kurSova.Models
 
         public static Matrix StrassenVinogradMultiply(Matrix a, Matrix b)
         {
+            a = MatrixTransform(a);
+            b = MatrixTransform(b);
             int[] sizes = new int[] { a.RowsCount, a.ColumnsCount, b.RowsCount, b.ColumnsCount };
             if (sizes.Distinct().Count() != 1 || (a.RowsCount & (a.RowsCount - 1)) != 0)
                 throw new ArgumentException("Not identical or square matrices.");
@@ -218,13 +217,13 @@ namespace kurSova.Models
             var s8 = s6 - b21;
 
             Matrix[] m = new Matrix[]{
-                StrassenMultiply(s2, s6),
-                StrassenMultiply(a11, b11),
-                StrassenMultiply(a12, b21),
-                StrassenMultiply(s3, s7),
-                StrassenMultiply(s1, s5),
-                StrassenMultiply(s4, b22),
-                StrassenMultiply(a22, s8),
+                StrassenVinogradMultiply(s2, s6),
+                StrassenVinogradMultiply(a11, b11),
+                StrassenVinogradMultiply(a12, b21),
+                StrassenVinogradMultiply(s3, s7),
+                StrassenVinogradMultiply(s1, s5),
+                StrassenVinogradMultiply(s4, b22),
+                StrassenVinogradMultiply(a22, s8),
             };
 
             var t1 = m[1] + m[1];
@@ -241,6 +240,116 @@ namespace kurSova.Models
         public override int GetHashCode()
         {
             return _values.GetHashCode();
+        }
+        
+        public static Matrix MatrixTransform(Matrix matrix)
+        {
+            int size;
+            if (matrix.ColumnsCount > matrix.RowsCount)
+            {
+                size = matrix.ColumnsCount;
+                int k = 4;
+                while (Math.Pow(2, k) < size)
+                {
+                    k++;
+                }
+
+                double temp = Math.Pow(2, k);
+                size = Convert.ToInt32(temp);
+
+                Matrix cubiMatrix = new Matrix(size, size);
+                for (int i = 0; i < size; i++)
+                {
+                    for (int j = 0; j < size; j++)
+                    {
+                        if (j < matrix.ColumnsCount && i < matrix.RowsCount)
+                        {
+                            cubiMatrix[i, j] = matrix[i, j];
+                        }
+                        else
+                        {
+                            cubiMatrix[i, j] = 0;
+                        }
+                    }
+                }
+                return cubiMatrix;
+            }
+            else
+            {
+                
+                    size = matrix.RowsCount;
+                    int k = 4;
+                    while (Math.Pow(2, k) < size)
+                    {
+                        k++;
+                    }
+
+                    double temp = Math.Pow(2, k);
+                    size = Convert.ToInt32(temp);
+
+                    Matrix cubiMatrix = new Matrix(size, size);
+                    for (int i = 0; i < size; i++)
+                    {
+                        for (int j = 0; j < size; j++)
+                        {
+                            if (j < matrix.ColumnsCount && i < matrix.RowsCount)
+                            {
+                                cubiMatrix[i, j] = matrix[i, j];
+                            }
+                            else
+                            {
+                                cubiMatrix[i, j] = 0;
+                            }
+                        }
+                    }
+                    return cubiMatrix;
+            }
+        }
+
+        private bool IsRowZeros(int rowIndex)
+        {
+            for (int i = 0; i < ColumnsCount; i++)
+            {
+                if (_values[rowIndex, i] != 0)
+                    return false;
+            }
+            return true;
+        }
+        private bool IsColZeros(int colIndex)
+        {
+            for (int i = 0; i < RowsCount; i++)
+            {
+                if (_values[i, colIndex] != 0)
+                    return false;
+            }
+            return true;
+        }
+        public Matrix RemoveZeroVlues()
+        {
+            int row = RowsCount;
+            int col = ColumnsCount;
+            for (int i = 0; i < ColumnsCount; i++)
+            {
+                if (IsColZeros(i))
+                    col--;
+            }
+
+            for (int i = 0; i < RowsCount; i++)
+            {
+                if (IsRowZeros(i))
+                    row--;
+            }
+            Matrix newMatrix = new Matrix(row, col);
+
+            for (int i = 0; i < row; i++)
+            {
+                for (int j = 0; j < col; j++)
+                {
+                    newMatrix[i, j] = _values[i, j];
+                }
+            }
+
+            return newMatrix;
         }
     }
 }

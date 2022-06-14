@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Windows.Shapes;
 using kurSova.Enums;
 using kurSova.Models;
 using kurSova.ViewModels;
@@ -19,7 +19,7 @@ namespace kurSova
     public partial class MainWindow
     {
         private MultiplyType _multiplyType;
-        public MatrixViewModel ViewModel { get; set; }
+        public MatrixViewModel ViewModel { get; }
         public List<MultiplyType> Methods => Enum.GetValues(typeof(MultiplyType)).Cast<MultiplyType>().ToList();
         public MultiplyType SelectedMethod {
             get => _multiplyType;
@@ -74,12 +74,14 @@ namespace kurSova
                     m = MatrixASize1.Value.Value;
                     n = MatrixASize2.Value.Value;
                     ViewModel.MatrixA = MatrixGenerator.Generate(n, m);
+                    MatrixSaver.SaveMatrix(ViewModel.MatrixA, ViewModel.GetPath1());
                 }
                 else
                 {
                     m = MatrixBSize1.Value.Value;
                     n = MatrixBSize2.Value.Value;
                     ViewModel.MatrixB = MatrixGenerator.Generate(n, m);
+                    MatrixSaver.SaveMatrix(ViewModel.MatrixA, ViewModel.GetPath2());
                 }
             }
             catch (Exception ex)
@@ -88,7 +90,7 @@ namespace kurSova
                 return;
             }
             MessageBox.Show("Matrix generated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
+            
         }
         private Matrix GetMatrixFromFile(string path)
         {
@@ -120,25 +122,50 @@ namespace kurSova
 
         private void Multiply_Click(object sender, RoutedEventArgs e)
         {
-            switch (SelectedMethod)
+            try
             {
-                case MultiplyType.NormalMultiply:
-                    ViewModel.NormalMultiply();
+                switch (SelectedMethod)
+                {
+                    case MultiplyType.NormalMultiply:
+                        ViewModel.NormalMultiply();
 
-                    break;
-                case MultiplyType.StrassenMultiply:
-                    ViewModel.StrassenMultiply();
+                        break;
+                    case MultiplyType.StrassenMultiply:
+                        ViewModel.StrassenMultiply();
 
-                    break;
-                case MultiplyType.StrassenVinogradMultiply:
-                    ViewModel.StrassenVinogradMultiply();
+                        break;
+                    case MultiplyType.StrassenVinogradMultiply:
+                        ViewModel.StrassenVinogradMultiply();
 
-                    break;
-                case MultiplyType.All:
-                    ViewModel.AllMultiplys();
+                        break;
+                    case MultiplyType.All:
+                        ViewModel.AllMultiplys();
 
-                    break;
+                        break;
+                }
             }
+            catch(NullReferenceException)
+            {
+                MessageBox.Show("Matrices aren't generated");
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
+            
+        }
+
+        private void Read_Matrix1(object sender, RoutedEventArgs e)
+        {
+           ViewModel.ReadMatrix1();
+        }
+        private void Read_Matrix2(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ReadMatrix2();
+        }
+        private void Read_MatrixRes(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ReadMatrixRes();
         }
     }
 }

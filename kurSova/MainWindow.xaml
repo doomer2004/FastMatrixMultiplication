@@ -100,7 +100,7 @@
                                 <tools:IntegerUpDown Grid.Row="1"
                                                      x:Name="MatrixASize2"
                                                      HorizontalAlignment="Left"
-                                                     Value="512" />
+                                                     Value="64" />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -143,7 +143,7 @@
                                 <tools:IntegerUpDown Grid.Row="1"
                                                      x:Name="MatrixBSize2"
                                                      HorizontalAlignment="Right"
-                                                     Value="512" />
+                                                     Value="64" />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -172,11 +172,14 @@
             <Grid Grid.Column="1">
                 <StackPanel Orientation="Vertical">
                     <Button Content="Open file A"
-                            Margin="0,25" />
+                            Margin="0,25" 
+                            Click="Read_Matrix1"/>
                     <Button Content="Open file B"
-                            Margin="0,25" />
+                            Margin="0,25" 
+                            Click="Read_Matrix2"/>
                     <Button Content="Open result"
-                            Margin="0,25" />
+                            Margin="0,25" 
+                            Click="Read_MatrixRes"/>
                 </StackPanel>
             </Grid>
         </Grid>
