@@ -59,7 +59,8 @@ namespace kurSova.Models
             }
             return fromJson != null ? readedMatrix : throw new NullReferenceException("Unable to Deserialize");
         }
-
+        
+        
         private static void RewriteFile(string path) => File.Create(path).Close();
     }
 }
